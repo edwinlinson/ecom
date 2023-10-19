@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/fav.png}" href="">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Karma Shop</title>
+  <!--
+      CSS
+      ============================================= -->
+  <link rel="stylesheet" href="css/linearicons.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/owl.carousel.css">
+  <link rel="stylesheet" href="css/nice-select.css">
+  <link rel="stylesheet" href="css/nouislider.min.css">
+  <link rel="stylesheet" href="css/ion.rangeSlider.css"/>
+  <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css"/>
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+  <div class="main_menu">
+    <nav class="navbar navbar-expand-lg navbar-light main_box">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <a class="navbar-brand logo_h" th:href="@{/}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+          <ul class="nav navbar-nav menu_nav ml-auto">
+            <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/login}" href="">Login</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Manage your Orders here.</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <h1>Order Management</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Order ID</th>
+      <th scope="col">Order Date</th>
+      <th scope="col">Delivery Date</th>
+      <th scope="col">Order Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through user's orders here -->
+    <tr th:each="order : ${orderList}">
+      <td th:text="${order.id}"></td>
+      <td th:text="${order.orderDate}"></td>
+      <td th:text="${order.deliveryDate}"></td>
+      <td th:text="${order.orderStatus}"></td>
+      <td>
+        <p th:if="${order.orderStatus == 'CANCELLED'}">Order Cancelled.</p>
+        <p th:if="${order.orderStatus == 'OUT_FOR_DELIVERY'}">Order out for Delivery.</p>
+
+        <form th:unless="${order.orderStatus == 'CANCELLED'}" th:action="@{/orders/cancel/{orderId}(orderId=${order.id})}" method="post">
+          <button type="submit" class="btn btn-danger">Cancel</button>
+        </form>
+      </td>
+      <td>
+      <td>
+        <button type="button" class="btn btn-primary"
+                data-toggle="modal" th:data-target="'#orderDetailsModal-' + ${order.id}">
+          See Details
+        </button>
+      </td>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div th:each="order : ${orderList}" th:id="'orderDetailsModal-' + ${order.id}" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Order Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Order ID: <span th:text="${order.id}"></span></p>
+        <p>Order Date: <span th:text="${order.orderDate}"></span></p>
+        <p>Expected Delivery <span th:text="${order.deliveryDate}"></span></p>
+        <p>Total Amount <span th:text="${order.totalPrice}"></span></p>
+        <p>Payment Type: <span th:text="${order.paymentMethod}"></span></p>
+<!--        <p>Total Items: <span th:text="${order.}"></span></p>-->
+        <p>Order Status <span th:text="${order.orderStatus}"></span></p>
+        <ul>
+          <li th:each="orderDetail : ${order.orderDetails}">
+            Product: <span th:text="${orderDetail.product.name}"></span>
+<!--            Quantity: <span th:text="${orderDetail.quantity}"></span>-->
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

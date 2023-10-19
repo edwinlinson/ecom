@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}" href="">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Product View </title>
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/nouislider.min.css">
+    <link rel="stylesheet" href="/css/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="/css/ion.rangeSlider.skinFlat.css"/>
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu" >
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container ">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" th:href="@{/}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/login}" href="">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/cart}">Cart</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!--<div class="container mt-5">-->
+<!--    <div class="row">-->
+<!--        <div class="col-sm-5 d-flex justify-content-center">-->
+<!--            <img class="mt-5" height="300px" width="300px" src="" th:src="@{${'/productImages/' + product.imgName}}"-->
+<!--                 alt="">-->
+<!--        </div>-->
+<!--        <div class="col-sm-7 mt-5">-->
+<!--            <h2 th:text="${product.name}"></h2>-->
+<!--            <p th:text="${product.category.name}"></p>-->
+<!--            <h2>₹ <span th:text="${product.price}"></span></h2>-->
+<!--            <h5>Brand and Design:-->
+<!--                <span th:text="${product.brand}"></span>-->
+<!--            </h5>-->
+<!--            <p th:text="${product.description}"></p>-->
+<!--            <p>Remaining Stock: </p><p th:text="${product.qty}"></p>-->
+<!--            <form th:action="@{/addToCart/{id}(id=${product.id})}" method="get">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="qty">Ordered Quantity:</label>-->
+<!--                    <input type="number" class="form-control" id="qty" name="qty" placeholder="Enter quantity"-->
+<!--                           min="1" max="${product.qty}">-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary">Add to Cart</button>-->
+<!--            </form>-->
+<!--            <div th:if="${param.qty != null}">-->
+<!--                <div th:if="${#strings.parseInt(param.qty) > product.qty}" class="alert alert-danger">-->
+<!--                    Ordered quantity exceeds quantity in stock.-->
+<!--                </div>-->
+<!--            </div>-->
+<!--&lt;!&ndash;            <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn btn-primary">Add to cart</a>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-5 d-flex justify-content-center">
+            <div th:each="imageName : ${product.imageNames}">
+                <img class="mt-5" height="300px" width="300px" th:src="@{'/productImages/' + ${imageName}}" alt="">
+            </div>
+        </div>
+        <div class="col-sm-7 mt-5">
+            <!-- Rest of your product details -->
+            <h2 th:text="${product.name}"></h2>
+            <p th:text="${product.category.name}"></p>
+            <h2>₹ <span th:text="${product.price}"></span></h2>
+            <h5>Brand and Design:
+                <span th:text="${product.brand}"></span>
+            </h5>
+            <p th:text="${product.description}"></p>
+<!--            <p>Remaining Stock: </p><p th:text="${product.qty}"></p>-->
+            <form th:action="@{/addToCart/{id}(id=${product.id})}" method="get">
+                <div class="form-group">
+                    <label for="qty">Ordered Quantity:</label>
+                    <input type="number" class="form-control" id="qty" name="qty" placeholder="Enter quantity"
+                           min="1" max="${product.qty}">
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
+
+            <div th:if="${error}">
+                <p class="alert alert-dark" th:text="${error}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

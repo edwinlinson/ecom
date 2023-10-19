@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th = "https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/nouislider.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .dashboard-links {
+            display: flex;
+            align-items: end; /* Vertically center the content */
+            margin-top: 10px; /* Add some spacing between the header and links */
+        }
+
+        .dashboard-links h5 {
+            margin-right: 20px; /* Add spacing between the links */
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" th:href="@{/home}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item" th:if="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/logout}" href="">Logout</a>
+                        </li>
+                        <li class="nav-item" th:unless="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/login}" href="">Login</a>
+                        </li>
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/cart}" href="">Cart</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Welcome , <span th:text="${#authentication.name}"></span></h1>
+                <h4>Manage your account from here.</h4>
+<!--                <h5><a th:href="@{/userDetails}"> User Details  </a></h5> <h5><a th:href="@{/orders}"> Track your Orders  </a></h5> <h5><a th:href="@{/address}"> Address Management.  </a></h5>-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">User Details</h4>
+                    <p class="card-text">Manage your details here.</p>
+                    <a href="#" th:href="@{/userDetails}" class="card-link btn btn-primary">Manage</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Orders</h4>
+                    <p class="card-text">Manage all the orders here.</p>
+                    <a href="#" th:href="@{/orders}" class="card-link btn btn-primary">Manage</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Address</h4>
+                    <p class="card-text">Manage addresses here.</p>
+                    <a href="#" th:href="@{/address}" class="card-link btn btn-primary">Manage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    <div class="dashboard-container">-->
+<!--        &lt;!&ndash; Content Container &ndash;&gt;-->
+<!--        <div class="content-container">-->
+<!--            &lt;!&ndash; Side Panel &ndash;&gt;-->
+<!--            <div class="side-panel">-->
+<!--                <h2>User Dashboard</h2>-->
+<!--                <ul>-->
+<!--                    <li><a href="#user-details">User Details</a></li>-->
+<!--                    <li><a href="#orders">Orders</a></li>-->
+<!--                    <li><a href="#address-details">Address Details</a></li>-->
+<!--                    &lt;!&ndash; Add more links as needed &ndash;&gt;-->
+<!--                </ul>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Main Content &ndash;&gt;-->
+<!--            <div class="main-content">-->
+<!--                &lt;!&ndash; Add your main content here &ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--<div class="dashboard-container">-->
+
+<!--    &lt;!&ndash; Content Container &ndash;&gt;-->
+<!--    <div class="content-container">-->
+<!--        &lt;!&ndash; Side Panel &ndash;&gt;-->
+<!--        <div class="side-panel">-->
+<!--            <h2>User Dashboard</h2>-->
+<!--            <ul>-->
+<!--                <li><a href="#user-details">User Details</a></li>-->
+<!--                <li><a href="#orders">Orders</a></li>-->
+<!--                <li><a href="#address-details">Address Details</a></li>-->
+<!--                <li><a href="#address-details">Payments and offers.</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--</div>-->
+</body>
+</html>

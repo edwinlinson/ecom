@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Users</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">SN</th>
+            <th scope="col">User Name</th>
+<!--            <th scope="col">Product Name</th>-->
+<!--            <th scope="col">Remaining Stock</th>-->
+            <th scope="col">Order Date</th>
+            <th scope="col">Delivery Date</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Cancel Order</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order, iStat : ${orderList}">
+            <th scope="row" th:text="${iStat.index + 1}">1</th>
+            <td th:text="${order.user.name}">User Name</td>
+<!--            <td th:text="${order.}">Product Name</td>-->
+<!--            &lt;!&ndash; Add other order attributes as needed &ndash;&gt;-->
+<!--            <td th:text="${order.}">Remaining Stock</td>-->
+            <td th:text="${order.orderDate}">Order Date</td>
+            <td th:text="${order.deliveryDate}">Delivery Date</td>
+            <td th:text="${order.paymentMethod}">Payment Status</td>
+<!--            <td>-->
+<!--                <form th:action="@{'/admin/orders/update-status/' + ${order.id}}" method="post">-->
+<!--                    <select class="form-control" name="orderStatus" th:model="${order.orderStatus}">-->
+<!--                        <option value="CONFIRMED" th:selected="${order.orderStatus == 'CONFIRMED'}">CONFIRMED</option>-->
+<!--                        <option value="PAYMENT_PENDING" th:selected="${order.orderStatus == 'PAYMENT_PENDING'}">PAYMENT PENDING</option>-->
+<!--                        <option value="OUT_FOR_DELIVERY" th:selected="${order.orderStatus == 'OUT_FOR_DELIVERY'}">OUT FOR DELIVERY</option>-->
+<!--                        <option value="DELIVERED" th:selected="${order.orderStatus == 'DELIVERED'}">DELIVERED</option>-->
+<!--                        <option value="CANCELLED" th:selected="${order.orderStatus == 'CANCELED'}">CANCELLED</option>-->
+<!--                    </select>-->
+<!--                    <button type="submit" class="btn btn-primary">Update Status</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--&lt;!&ndash;                <span th:if="${order.orderStatus == 'CANCELLED'}">Cannot update status, Order Cancelled.</span>&ndash;&gt;-->
+<!--                <form th:if="${order.orderStatus != 'CANCELLED'}"-->
+<!--                      th:action="@{'/admin/orders/update-status/' + ${order.id}}"-->
+<!--                      method="post">-->
+<!--                    <select class="form-control" name="orderStatus"-->
+<!--                            th:model="${order.orderStatus}"-->
+<!--                            th:disabled="${order.orderStatus == 'CANCELLED'}">-->
+<!--                        <option value="CONFIRMED" th:selected="${order.orderStatus == 'CONFIRMED'}">CONFIRMED</option>-->
+<!--                        <option value="PAYMENT_PENDING" th:selected="${order.orderStatus == 'PAYMENT_PENDING'}">PAYMENT PENDING</option>-->
+<!--                        <option value="OUT_FOR_DELIVERY" th:selected="${order.orderStatus == 'OUT_FOR_DELIVERY'}">OUT FOR DELIVERY</option>-->
+<!--                        <option value="DELIVERED" th:selected="${order.orderStatus == 'DELIVERED'}">DELIVERED</option>-->
+<!--                        <option value="CANCELLED" th:selected="${order.orderStatus == 'CANCELLED'}">CANCELLED</option>-->
+<!--                    </select>-->
+<!--                    <button type="submit" class="btn btn-primary"-->
+<!--                            th:disabled="${order.orderStatus == 'CANCELLED'}">Update Status</button>-->
+<!--                </form>-->
+<!--                <span th:if="${order.orderStatus == 'CANCELLED'}">Cannot update status, Order Cancelled.</span>-->
+<!--            </td>-->
+            <td>
+                <form th:if="${order.orderStatus != 'CANCELLED'}"
+                      th:action="@{'/admin/orders/update-status/' + ${order.id}}"
+                      method="post">
+                    <select class="form-control" name="orderStatus"
+                            th:model="${order.orderStatus}"
+                            th:disabled="${order.orderStatus == 'CANCELLED' or order.orderStatus == 'DELIVERED'}">
+                        <option value="CONFIRMED" th:selected="${order.orderStatus == 'CONFIRMED'}">CONFIRMED</option>
+                        <option value="PAYMENT_PENDING" th:selected="${order.orderStatus == 'PAYMENT_PENDING'}">PAYMENT PENDING</option>
+                        <option value="OUT_FOR_DELIVERY" th:selected="${order.orderStatus == 'OUT_FOR_DELIVERY'}" th:unless="${order.orderStatus == 'DELIVERED'}">OUT FOR DELIVERY</option>
+                        <option value="DELIVERED" th:selected="${order.orderStatus == 'DELIVERED'}" th:unless="${order.orderStatus == 'OUT_FOR_DELIVERY'}">DELIVERED</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary"
+                            th:disabled="${order.orderStatus == 'CANCELLED' or order.orderStatus == 'DELIVERED'}">Update Status</button>
+                </form>
+                <span th:if="${order.orderStatus == 'CANCELLED'}">Cannot update status, Order Cancelled.</span>
+            </td>
+
+
+            <!--            <td>-->
+<!--                <a href="" th:action="@{/orders/cancel/{orderId}(orderId=${order.id})}" methods="post">Cancel</a>-->
+<!--            </td>-->
+            <td>
+<!--                <a th:if="${order.orderStatus != 'OUT_FOR_DELIVERY' and order.orderStatus != 'CANCELLED' and order.orderStatus != 'DELIVERED'}"-->
+<!--                   href="@{'/admin/orders/cancel/' + ${order.id}}"-->
+<!--                   method="post">Cancel</a>-->
+                <form th:if="${order.orderStatus != 'OUT_FOR_DELIVERY' and order.orderStatus != 'CANCELLED' and order.orderStatus != 'DELIVERED'}"
+                      th:action="@{'/admin/orders/cancel/' + ${order.id}}"
+                      method="post">
+                    <button type="submit">Cancel</button>
+                </form>
+                <span th:if="${order.orderStatus == 'CANCELLED'}"> Order Cancelled.</span>
+                <span th:if="${order.orderStatus == 'OUT_FOR_DELIVERY'}">Cannot cancel, Already Out For Delivery</span>
+                <span th:if="${order.orderStatus == 'DELIVERED'}">Order Delivered.</span>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+</html>

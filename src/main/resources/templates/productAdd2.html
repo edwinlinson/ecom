@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Form</title>
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2>Create Product</h2>
+    <form th:object="${productDTO}" th:action="@{/saveProduct}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="categoryId">Category ID</label>
+            <input type="number" class="form-control" id="categoryId" th:field="*{categoryId}">
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" th:field="*{price}">
+        </div>
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <input type="text" class="form-control" id="brand" th:field="*{brand}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" th:field="*{description}"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="imgNames">Image 1</label>
+            <input type="file" class="form-control" id="imgNames" name="imgNames" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label for="imgNames">Image 2</label>
+            <input type="file" class="form-control" id="imgNames" name="imgNames" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <input type="number" class="form-control" id="qty" th:field="*{qty}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

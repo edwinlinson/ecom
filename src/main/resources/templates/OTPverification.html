@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/fav.png}" href="">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Add Address</title>
+  <!--
+      CSS
+      ============================================= -->
+  <link rel="stylesheet" href="/css/linearicons.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/themify-icons.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/nice-select.css">
+  <link rel="stylesheet" href="/css/nouislider.min.css">
+  <link rel="stylesheet" href="/css/ion.rangeSlider.css"/>
+  <link rel="stylesheet" href="/css/ion.rangeSlider.skinFlat.css"/>
+  <link rel="stylesheet" href="/css/magnific-popup.css">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+  <div class="main_menu" >
+    <nav class="navbar navbar-expand-lg navbar-light main_box">
+      <div class="container ">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <a class="navbar-brand logo_h" th:href="@{/}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+          <ul class="nav navbar-nav menu_nav ml-auto">
+            <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/login}" href="">Login</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<div class="container">
+  <h1>OTP Verification</h1>
+  <p>An OTP has been sent to your mobile number. Please enter the OTP below:</p>
+
+  <p>Email: <span th:text="${userDto.email}"></span></p>
+  <div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+  </div>
+
+  <div class="col-lg-6 text-center" style="margin: auto">
+    <div class="login_form_inner">
+      <h1>Verify OTP</h1>
+      <form class="row login_form" th:action="@{/verifyotp}" method="post" >
+        <div class="col-md-12 form-group">
+          <label for="otp"></label>
+          <input type="hidden" id="email" name="email" class="" th:value="${userDto.email}" />
+          <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter OTP" required />
+        </div>
+        <div class="col-md-12 form-group">
+          <button type="submit" class="primary-btn">Verify OTP</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+</div>
+</body>
+</html>

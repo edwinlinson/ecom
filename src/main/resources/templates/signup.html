@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::#signup})">
+<!--      th:replace="user/base::layout(~{::#signup})">-->
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Title</title>
+</head>
+<body>
+<div id="signup">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 ">
+                <div class="signup-card mt-3">
+
+                    <img style="width: 40px" th:src="@{/images/register.png}" alt="" src="">
+
+                    <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert "
+                         role="alert">
+                        <p th:text="${session.message.content}" class="text-center"></p>
+
+                    </div>
+
+                    <h2 class="text-center">Get Started..</h2>
+                    <form th:action="@{/do_register}" method="post" th:object="${userEntity}" novalidate>
+
+                        <!---------------------name field----------------------->
+                        <div class="form-group mb-3">
+                            <label for="name_field">
+                                Enter Your Name
+                            </label>
+                            <input name="name"
+                                   type="text"
+                                   class="form-control "
+                                   th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                                   id="name_field"
+                                   placeholder="Name"
+                                   th:value="${userEntity.name}"
+                                   required>
+                        </div>
+
+                        <!---------------------email field----------------------->
+                        <div class="form-group mb-3">
+                            <label for="email_field">
+                                Enter Your Email
+                            </label>
+                            <input name="email"
+                                   type="email"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
+                                   id="email_field"
+                                   placeholder="Email address"
+                                   th:value="${userEntity.email}"
+                                  required>
+                        </div>
+
+                        <!---------------------password field----------------------->
+                        <div class="form-group mb-3">
+                            <label for="password_field">
+                                Enter Your Password
+                            </label>
+                            <input name="password"
+                                   type="password"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('password')?'is-invalid':''}"
+                                   id="password_field"
+                                   placeholder="Password"
+                                   required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="phoneNumber_field">
+                                Enter Your Email
+                            </label>
+                            <input name="phoneNumber"
+                                   type="tel"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('phoneNumber')?'is-invalid':''}"
+                                   id="phoneNumber_field"
+                                   placeholder="Email address"
+                                   th:value="${userEntity.phoneNumber}"
+                                   required>
+                        </div>
+
+
+                        <!--terms and conditions agreement-->
+                        <div class="form-group form-check">
+                            <label for="agreement">Accept the terms and conditions</label>
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   name="agreement"
+                                   id="agreement">
+                        </div>
+
+                        <!--buttons for signup and reset-->
+                        <div class="container-fluid  d-flex w-100">
+                            <button type="submit" class="btn bg-primary text-white  m-2 me-1 w-50">Submit</button>
+                            <button type="reset" class="btn bg-primary text-white m-2 ms-1 w-50"> Reset</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

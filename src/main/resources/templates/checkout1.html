@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th = "https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" th:href="@{/home}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item" th:if="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/logout}" href="">Logout</a>
+                        </li>
+                        <li class="nav-item" th:unless="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/login}" href="">Login</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/wallet}" >Wallet</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout </h1>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- End Banner Area -->
+
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+<!--            <div class="returning_customer">-->
+<!--                <div class="check_title">-->
+<!--                    <h2>Returning Customer? <a href="#">Click here to login</a></h2>-->
+<!--                </div>-->
+<!--                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new-->
+<!--                    customer, please proceed to the Billing & Shipping section.</p>-->
+<!--                <form class="row contact_form" action="#" method="post" novalidate="novalidate">-->
+<!--                    <div class="col-md-6 form-group p_star">-->
+<!--                        <input type="text" class="form-control" id="name" name="name">-->
+<!--                        <span class="placeholder" data-placeholder="Username or Email"></span>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 form-group p_star">-->
+<!--                        <input type="password" class="form-control" id="password" name="password">-->
+<!--                        <span class="placeholder" data-placeholder="Password"></span>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-12 form-group">-->
+<!--                        <button type="submit" value="submit" class="primary-btn">login</button>-->
+<!--                        <div class="creat_account">-->
+<!--                            <input type="checkbox" id="f-option" name="selector">-->
+<!--                            <label for="f-option">Remember me</label>-->
+<!--                        </div>-->
+<!--                        <a class="lost_pass" href="#">Lost your password?</a>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+            <div class="cupon_area">
+                <div class="check_title">
+                    <h2>Have a coupon? Enter your coupon code below.</h2>
+                </div>
+                <input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code">
+                <a class="tp_btn" href="#" onclick="applyCoupon()">Apply Coupon</a>
+<!--                <button class="tp_btn" type="button" onclick="applyCoupon()">Apply Coupon</button>-->
+            </div>
+            <div id="toast" class="toast"></div>
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Select Address</h3>
+                        <!-- Display existing addresses as an unordered list -->
+                        <ul class="existing-addresses">
+                            <!-- Iterate over the user's addresses -->
+<!--                            <th:block th:each="address : ${user.addresses}">-->
+<!--                                <li>-->
+<!--                                    <input type="radio" name="addressId" th:value="${address.id}">-->
+<!--                                    <label>-->
+<!--                                        <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>-->
+<!--                                        &lt;!&ndash;                                        ${address.street}, ${address.city}, ${address.country}&ndash;&gt;-->
+<!--                                    </label>-->
+<!--                                </li>-->
+<!--                            </th:block>-->
+                            <ul class="existing-addresses">
+                                <!-- Iterate over the user's addresses -->
+                                <ul class="existing-addresses">
+                                    <!-- Iterate over the user's addresses -->
+                                    <th:block th:each="address : ${user.addresses}">
+                                        <li class="payment_item">
+                                            <div class="radion_btn">
+                                                <input type="radio" name="addressId" th:value="${address.id}" id="address-${address.id}">
+                                                <label for="address-${address.id}">
+                                                    <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>
+                                                </label>
+                                                <div class="check"></div>
+                                            </div>
+<!--                                            <p>Pay at the time of delivery.</p>-->
+                                        </li>
+                                    </th:block>
+                                </ul>
+
+                            </ul>
+                        </ul>
+                        <h3>Add new Address</h3>
+                        <form class="row contact_form" th:action="@{/checkout/addAddress}" method="post" novalidate="novalidate">
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="street" name="street" placeholder="Street">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="line1" name="line1" placeholder="Address Line 1">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="line2" name="line2" placeholder="Address Line 2">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="state" name="state" placeholder="State">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Postal Code">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="country" name="country" placeholder="Country">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" class="btn btn-primary">Add Address</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                <li th:each="cartItem : ${cartItems}">
+                                    <a href="" th:inline="text">
+                                        [[${cartItem.product.name}]] [[${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;'}]] [[${cartItem.quantity}]] [[${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}]] [[${cartItem.product.price * cartItem.quantity}]]
+                                    </a>
+                                </li>
+                            </ul>
+<!--                            <form th:action="@{/checkout/confirmOrder}" method="post" onsubmit="return handlePayment()">-->
+<!--                                <ul class="list list_2">-->
+<!--                                    <li><a href="#">Total <span id="total_price" th:text="${totalprice}"></span></a></li>-->
+<!--                                </ul>-->
+<!--                                <div class="payment_item">-->
+<!--                                    <div class="radion_btn">-->
+<!--                                        <input type="radio" id="f-option5" name="selector">-->
+<!--                                        <label for="f-option5">Cash on Delivery</label>-->
+<!--                                        <div class="check"></div>-->
+<!--                                    </div>-->
+<!--                                    <p>Pay at the time of delivery.</p>-->
+<!--                                </div>-->
+<!--                                <div class="payment_item active">-->
+<!--                                    <div class="radion_btn">-->
+<!--                                        <input type="radio" id="payNow" name="selector">-->
+<!--                                        <label for="payNow">Pay Now</label>-->
+<!--                                        <img src="img/product/card.jpg" alt="">-->
+<!--                                        <div class="check"></div>-->
+<!--                                    </div>-->
+<!--                                    <p>Pay via any online options now. Including UPI and card payments.</p>-->
+<!--                                </div>-->
+<!--                                <div class="payment_item">-->
+<!--                                    <div class="radion_btn">-->
+<!--                                        <input type="radio" id="f-option7" name="selector">-->
+<!--                                        <label for="f-option7">Pay via Wallet</label>-->
+<!--                                        <div class="check"></div>-->
+<!--                                    </div>-->
+<!--                                    <p>Pay via balance available in your Wallet.</p>-->
+<!--                                </div>-->
+<!--                                <div class="creat_account">-->
+<!--                                    <input type="checkbox" id="f-option4" name="selector">-->
+<!--                                    <label for="f-option4">I’ve read and accept the <a href="#">terms & conditions*</a></label>-->
+<!--                                </div>-->
+<!--                                <button type="submit" class="primary-btn">PROCEED</button>-->
+<!--                            </form>-->
+                            <form th:action="@{/checkout/confirmOrder}" method="post" onsubmit="return handlePayment()">
+                                <ul class="list list_2">
+                                    <li><a href="#">Total <span id="total_price" th:text="${totalprice}"></span></a></li>
+                                </ul>
+                                <div class="payment_item">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="cashOnDelivery" name="paymentMethod" value="cashOnDelivery">
+                                        <label for="cashOnDelivery">Cash on Delivery</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <p>Pay at the time of delivery.</p>
+                                </div>
+                                <div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="payNow" name="paymentMethod" value="payNow">
+                                        <label for="payNow">Pay Now</label>
+                                        <img src="img/product/card.jpg" alt="">
+                                        <div class="check"></div>
+                                    </div>
+                                    <p>Pay via any online options now. Including UPI and card payments.</p>
+                                </div>
+                                <div class="payment_item">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="Wallet" name="paymentMethod" value="Wallet">
+                                        <label for="Wallet">Pay via Wallet</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <p>Pay via balance available in your Wallet.</p>
+                                </div>
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option4" name="selector">
+                                    <label for="f-option4">I’ve read and accept the <a href="#">terms & conditions*</a></label>
+                                </div>
+                                <button type="submit">Confirm Order</button>
+                            </form>
+
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+
+    <!-- start footer Area -->
+    <footer class="footer-area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>About Us</h6>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore dolore
+                            magna aliqua.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4  col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Newsletter</h6>
+                        <p>Stay update with our latest</p>
+                        <div class="" id="mc_embed_signup">
+
+                            <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                                method="get" class="form-inline">
+
+                                <div class="d-flex flex-row">
+
+                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter Email '" required="" type="email">
+
+
+                                    <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
+                                            aria-hidden="true"></i></button>
+                                    <div style="position: absolute; left: -5000px;">
+                                        <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
+                                            type="text">
+                                    </div>
+                                </div>
+                                <div class="info"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3  col-md-6 col-sm-6">
+                    <div class="single-footer-widget mail-chimp">
+                        <h6 class="mb-20">Instragram Feed</h6>
+                        <ul class="instafeed d-flex flex-wrap">
+                            <li><img src="img/i1.jpg" alt=""></li>
+                            <li><img src="img/i2.jpg" alt=""></li>
+                            <li><img src="img/i3.jpg" alt=""></li>
+                            <li><img src="img/i4.jpg" alt=""></li>
+                            <li><img src="img/i5.jpg" alt=""></li>
+                            <li><img src="img/i6.jpg" alt=""></li>
+                            <li><img src="img/i7.jpg" alt=""></li>
+                            <li><img src="img/i8.jpg" alt=""></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h6>Follow Us</h6>
+                        <p>Let us be social</p>
+                        <div class="footer-social d-flex align-items-center">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-dribbble"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+                <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    // function handlePayment() {
+    //     const paymentMethod = document.getElementById("paymentMethod").value;
+    //     console.log(" " +paymentMethod);
+    //     if (paymentMethod === "payNow") {
+    //         console.log("payment method is payNOw");
+    //         initiateRazorpayPayment();
+    //         return false;
+    //     }
+    //     return true;
+    // }
+    function handlePayment() {
+        const paymentMethods = document.getElementsByName("paymentMethod");
+        let selectedPaymentMethod = null;
+
+        for (let i = 0; i < paymentMethods.length; i++) {
+            if (paymentMethods[i].checked) {
+                selectedPaymentMethod = paymentMethods[i].id;
+                break;
+            }
+        }
+
+        if (selectedPaymentMethod === "payNow") {
+            console.log("Payment method is Pay Now");
+            initiateRazorpayPayment();
+            return false;
+        }
+
+        return true;
+    }
+    let couponApplied = false;
+    function applyCoupon() {
+        if (couponApplied) {
+            alert('Only one coupon can be applied per transaction.');
+            return;
+        }
+        const couponCode = document.getElementById('couponCode').value;
+        const totalPrice = parseFloat(document.getElementById('total_price').innerText);  // Get total price from the DOM
+        const endpoint = `/coupons/validate/${couponCode}?totalPrice=${totalPrice}`;  // Include totalPrice as a query parameter
+        console.log(couponCode)
+        console.log(totalPrice)
+        console.log("Inside apply Coupon");
+
+        fetch(endpoint)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data >= 0) {
+                    const totalPriceElement = document.getElementById('total_price');
+                    const discountedPrice = totalPrice - ((data / 100) * totalPrice);
+                    totalPriceElement.innerText = discountedPrice;
+                    couponApplied = true
+                    showToast();
+                    // alert('Coupon applied succesfully');
+                } else {
+                    alert('Invalid coupon code. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function showToast() {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Coupon applied successfully';
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000); // Hide after 3 seconds
+    }
+
+    function confirmOrder(razorpay_payment_id) {
+        console.log("Inside confirmOrder");
+        $.ajax({
+            url: '/checkout/confirmOrder',
+            type: 'POST',
+            data: {
+                paymentMethod: 'payNow',
+                paymentId: razorpay_payment_id
+            },
+            success: function (data) {
+                console.log('Order confirmed successfully:', data);
+                // window.location.href = '/OrderConfirmed.html';
+            },
+            error: function (error) {
+                console.error('Error confirming order:', error);
+                alert('Error confirming order');
+            }
+        });
+    }
+
+    function initiateRazorpayPayment() {
+        console.log("Initiate razorpay pay payNOw");
+        // let amount = parseFloat($('#total_price').text());
+        let amount = parseFloat(document.getElementById("total_price").textContent);
+        console.log("Total Price (numeric):", amount);
+
+        console.log(amount)
+        if(amount =='' || amount == null ){
+            alert("Amount is null, your cart empty");
+            return;
+        }
+        $.ajax(
+            {
+                url:'/payNow',
+                data : JSON.stringify({amount : amount,info:'order_request'}),
+                contentType : 'application/json',
+                type:'POST',
+                dataType:'json',
+                success:function (response){
+                    console.log(response)
+                    if (response.status === "created"){
+                        let options ={
+                            key:'rzp_test_Evnp1zBkKHfvaS',
+                            amount:response.amount,
+                            currency:'INR',
+                            name:'Karma Shoe Shop',
+                            description:'Pay for your order',
+                            image:"https://th.bing.com/th/id/OIP.ESB8d5xKbiIXELiU9EIjAQHaBk?pid=ImgDet&rs=1",
+                            order_id:response.id,
+                            handler:function (response){
+                                console.log(response.razorpay_payment_id)
+                                console.log(response.razorpay_order_id)
+                                console.log(response.razorpay_signature)
+                                console.log('payment succesfull')
+                                console.log('Calling confirmOrder');
+                                confirmOrder(response.razorpay_payment_id);
+                                alert("Congratz, Payment is succesfull!!")
+                            },
+                            prefill:{
+                                name:"Ebin Linson",
+                                email:"ebin@gmail.com",
+                                contact:"9605735217",
+                            },
+                            notes:{
+                                address: "Karma shoe Store"
+                            },
+                            theme:{
+                                color:"#3399cc"
+                            }
+                        }
+                        let rzp = new Razorpay(options);
+                        rzp.open();
+                    }
+                },
+                error:function (error){
+                    console.log(error)
+                    alert("smthng went wrong")
+                }
+
+            }
+        )
+    }
+
+    // function applyCoupon() {
+    //     const couponCode = document.getElementById('couponCode').value;
+    //     const endpoint = '/coupons/validate?couponCode=' + couponCode;
+    //
+    //     fetch(endpoint)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data >= 0) {
+    //                 const totalPriceElement = document.getElementById('total_price');
+    //                 const totalPrice = parseFloat(totalPriceElement.innerText);
+    //                 const discountedPrice = totalPrice - data;
+    //                 totalPriceElement.innerText = discountedPrice;
+    //             } else {
+    //                 alert('Invalid coupon code. Please try again.');
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // }
+    // function applyCoupon() {
+    //     const couponCode = document.getElementById('couponCode').value;
+    //     const endpoint = '/coupons/validate/' + couponCode;
+    //     console.log("Inside apply Coupon");
+    //     fetch(endpoint)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data >= 0) {
+    //                 const totalPriceElement = document.getElementById('total_price');
+    //                 const totalPrice = parseFloat(totalPriceElement.innerText);
+    //                 const discountedPrice = totalPrice - ((data/100)*totalPrice);
+    //                 totalPriceElement.innerText = discountedPrice;
+    //             } else {
+    //                 alert('Invalid coupon code. Please try again.');
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // }
+</script>
+
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="js/gmaps.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

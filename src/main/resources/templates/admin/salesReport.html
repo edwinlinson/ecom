@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <title>Users</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto"></ul>
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+<div class="text-center">
+  <h1>Sales Report</h1>
+  <form th:action="@{/admin/salesReport/}" method="post" onsubmit="return handleFormSubmit()">
+    <div>
+      <label for="fromDate">From Date:</label>
+      <input type="date" id="fromDate" name="fromDate">
+
+      <label for="toDate">To Date:</label>
+      <input type="date" id="toDate" name="toDate">
+
+    </div>
+    <div>
+      <select class="form-control" name="dates" id="datesSelect">
+        <option value="today">Daily Report </option>
+        <option value="weekly">Weekly Report</option>
+        <option value="Monthly">Monthly Report</option>
+        <option value="yearly">Yearly Report</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Generate</button>
+  </form>
+</div>
+
+
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Sl no.</th>
+    <th scope="col">Date</th>
+    <th scope="col">Number of Orders</th>
+    <th scope="col">Total Amount</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="report,rowStat :${sales}">
+    <td th:text="${rowStat.index+1}"></td>
+    <td><span th:text="${report.getDate()}"></span></td>
+    <td th:text="${report.getNum()}"></td>
+    <td th:text="${report.getTotal()}"></td>
+  </tr>
+  <tfoot>
+  <tr>
+    <td colspan="2"><strong>Total</strong></td>
+    <td><strong th:text="${totalOrders}"></strong></td>
+    <td><strong th:text="${totalAmount}"></strong></td>
+  </tr>
+   </tfoot>
+</table>
+
+<button id="generateChartBtn" class="btn btn-primary" data-toggle="modal" data-target="#salesChartModal">
+  Generate chart for this time period
+</button>
+
+<!-- Bootstrap modal for the chart -->
+<div class="modal fade" id="salesChartModal" tabindex="-1" role="dialog" aria-labelledby="salesChartModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="salesChartModalLabel">Sales Chart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <canvas id="salesChart"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+<!-- JavaScript to generate the chart -->
+<script>
+  document.getElementById('generateChartBtn').addEventListener('click', function() {
+    const fromDate = document.getElementById('fromDate').value; // Get fromDate from input
+    const toDate = document.getElementById('toDate').value;
+    fetch(`/admin/generateSalesChart?fromDate=${fromDate}&toDate=${toDate}`)
+            .then(response => response.json())
+            .then(data => renderSalesChart(data))
+            .catch(error => console.error('Error fetching sales data:', error));
+            $('#salesChartModal').modal('show');
+  });
+
+  function renderSalesChart(data) {
+    const salesChartCanvas = document.getElementById('salesChart');
+
+    const ctx = salesChartCanvas.getContext('2d');
+    const salesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.map(item => item.date),
+        datasets: [{
+          label: 'Total Sales',
+          data: data.map(item => item.total),
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+    document.getElementById('generateChartBtn').style.display = 'none';
+    document.getElementById('salesChartContainer').style.display = 'block';
+  }
+
+  function handleFormSubmit() {
+    const selectedOption = document.getElementById('datesSelect').value;
+    const fromDate = document.getElementById('fromDate');
+    const toDate = document.getElementById('toDate');
+
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    switch (selectedOption) {
+      case 'today':
+        fromDate.value = formatDate(today);
+        toDate.value = formatDate(today);
+        break;
+      case 'weekly':
+        let startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        fromDate.value = formatDate(startOfWeek);
+        toDate.value = formatDate(today);
+        break;
+      case 'Monthly':
+        let startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        fromDate.value = formatDate(startOfMonth);
+        toDate.value = formatDate(today);
+        break;
+      case 'yearly':
+        let startOfYear = new Date(today.getFullYear(), 0, 1);
+        fromDate.value = formatDate(startOfYear);
+        toDate.value = formatDate(today);
+        break;
+      default:
+        break;
+    }
+
+    return true;
+  }
+
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+</script>
+</body>
+</html>

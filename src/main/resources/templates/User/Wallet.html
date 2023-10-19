@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th = "https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/nouislider.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .dashboard-links {
+            display: flex;
+            align-items: end; /* Vertically center the content */
+            margin-top: 10px; /* Add some spacing between the header and links */
+        }
+
+        .dashboard-links h5 {
+            margin-right: 20px; /* Add spacing between the links */
+        }
+    </style>
+</head>
+
+<body>
+
+
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <a class="navbar-brand logo_h" th:href="@{/home}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item" th:if="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/logout}" href="">Logout</a>
+                        </li>
+                        <li class="nav-item" th:unless="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/login}" href="">Login</a>
+                        </li>
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/cart}" href="">Cart</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Welcome , <span th:text="${#authentication.name}"></span></h1>
+                <h4>Manage your Wallet from here.</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="col-lg-6 text-center" style="margin: auto" >
+    <div class="login_form_inner">
+        <h1>Your wallet balance is <span th:text="${balance}"></span></h1>
+        <form class="row login_form" th:action="@{/addToWallet}" method="post" >
+            <div class="col-md-12 form-group">
+                <label for="amount"></label>
+                <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter Amount." required />
+            </div>
+            <div class="col-md-12 form-group">
+                <button type="submit" class="primary-btn">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="col-lg-6 text-center" style="margin: auto">
+    <div class="login_form_inner">
+        <h1>Claim money using Referrals.</h1>
+        <h1>Your Referral code is  <span th:text="${referral}"></span></h1>
+        <form class="row login_form" th:action="@{/referral}" method="post" >
+            <div class="col-md-12 form-group">
+                <label for="email"></label>
+                <input type="text" id="email" name="email" class="form-control" placeholder="Enter email of friend" required />
+            </div>
+            <div class="col-md-12 form-group">
+                <button type="submit" class="primary-btn">Verify OTP</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

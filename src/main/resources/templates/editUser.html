@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}" href="">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Account Details</title>
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/nouislider.min.css">
+    <link rel="stylesheet" href="/css/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="/css/ion.rangeSlider.skinFlat.css"/>
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/login}" href="">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Edit Your Account Details</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="login_box_area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Edit your Details</h3>
+<!--                    <p>Please fill out this form to register</p>-->
+                    <form class="row login_form" th:action="@{/updateUser}" method="post" th:object="${user}"
+                          id="registrationForm">
+                        <input type="hidden" name="id" th:field="*{id}">
+                        <div class="col-md-6 form-group">
+                            <label for="firstname"></label>
+                            <input type="text" class="form-control" required th:field="*{firstname}" name="firstname"
+                                   id="firstname" placeholder="Enter First Name">
+                            <p th:errors="*{firstname}" class="text-danger"
+                               th:if="${#fields.hasErrors('firstname')}"></p>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="lastname"></label>
+                            <input type="text" class="form-control" required th:field="*{lastname}" name="lastname"
+                                   id="lastname" placeholder="Enter Last Name">
+                            <p th:errors="*{lastname}" class="text-danger"
+                               th:if="${#fields.hasErrors('lastname')}"></p>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="email"></label>
+                            <input type="text" class="form-control" required th:field="*{email}" name="email" id="email"
+                                   placeholder="Enter Email">
+                            <p th:errors="*{email}" class="text-danger"
+                               th:if="${#fields.hasErrors('email')}"></p>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="password"></label>
+                            <input type="password" class="form-control" required th:field="*{password}" name="password"
+                                   id="password" placeholder="Enter Password">
+                            <p th:errors="*{password}" class="text-danger"
+                               th:if="${#fields.hasErrors('password')}"></p>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="phoneNumber"></label>
+                            <input type="number" class="form-control" required th:field="*{phoneNumber}"
+                                   name="phoneNumber" id="phoneNumber" placeholder="Enter Phone Number">
+                            <p th:errors="*{phoneNumber}" class="text-danger"
+                               th:if="${#fields.hasErrors('phoneNumber')}"></p>
+                        </div>
+                        <input type="hidden" id="enabled" name="enabled" th:field="*{enabled}" th:value="${true}" />
+                        <input type="hidden" id="role" name="role" th:field="*{role}" th:value="${user}" />
+                        <div class="col-md-12 form-group">
+                            <button type="submit" class="primary-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>

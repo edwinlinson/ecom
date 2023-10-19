@@ -1,0 +1,35 @@
+<!doctype html >
+<html lang="zxx" class="no-js" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome CDN  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+          integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+          crossorigin="anonymous" />
+     <style>
+
+     </style>
+
+    <title>OTP verify</title>
+</head>
+
+<body>
+<p>OTP sent to</p><span th:text="${userDTto.phoneNumber}"></span>
+<h1>Enter OTP</h1>
+<form th:action="@{/verifyotp}" method="post">
+    <div class="form-group">
+        <label for="otp">OTP:</label>
+        <input type="hidden" id="email" name="email" th:value="${userDto.email}" />
+        <input type="text" id="otp" name="otp" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Verify OTP</button>
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+<body>
+<!--<h1>Product List</h1>-->
+<!--<ul>-->
+<!--    <li th:each="product : ${products}">-->
+<!--        <div>-->
+<!--            <h2 th:text="${product.name}"></h2>-->
+<!--            <p th:text="${product.description}"></p>-->
+<!--            <p th:text="'Price: ₹ ' + ${product.price}"></p>-->
+<!--            <a th:href="@{/shop/viewproduct/{id}(id=${product.id})}">View Product</a>-->
+<!--            <hr>-->
+<!--        </div>-->
+<!--    </li>-->
+<!--</ul>-->
+<div class="container">
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-5">
+            <div class="sidebar-categories">
+<!--                <div class="head">Browse Categories</div>-->
+<!--                <ul class="list-group">-->
+<!--                    <a th:href="@{/shop}"><li class="list-group-item">All Products</li></a>-->
+<!--                    <a href="" th:each="category, iStat : ${categories}"-->
+<!--                       th:href="@{/shop/category/{id}(id=${category.id})}"><li-->
+<!--                            class="list-group-item" th:text="${category.name}"></li></a>-->
+<!--                </ul>-->
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7">
+            <!-- Start Filter Bar -->
+<!--            <div class="filter-bar d-flex flex-wrap align-items-center">-->
+<!--                <div class="pagination">-->
+<!--                    &lt;!&ndash;						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>&ndash;&gt;-->
+<!--                    &lt;!&ndash;						<a href="#" class="active">1</a>&ndash;&gt;-->
+<!--                    &lt;!&ndash;						<a href="#">2</a>&ndash;&gt;-->
+<!--                    &lt;!&ndash;						<a href="#">3</a>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="container">-->
+<!--                <div class="search-bar">-->
+<!--                    <input type="text" id="searchQuery" placeholder="Search products...">-->
+<!--                    <button onclick="searchProducts()">Search</button>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+                    <div class="col-sm-12" id="productsContainer">
+                        <div class="row">
+                            <!-- Loop through products and display each product -->
+                            <div class="col-sm-4" th:each="product : ${products}">
+                                <div class="card single-product" style="margin-top: 20px;">
+                                    <div class="card-body">
+                                        <!-- Display product image -->
+                                        <div th:each="imageName : ${product.imageNames}">
+                                            <img class="product-image" th:src="@{'/productImages/' + ${imageName}}"
+                                                 th:alt="${product.name}">
+                                        </div>
+                                        <!-- Display product details -->
+                                        <h5 class="card-title" th:text="${product.name}"></h5>
+                                        <h4>₹ <span th:text="${product.price}"></span></h4>
+                                        <p th:text="${product.description}">Indias leading snakerhouse</p>
+                                        <a href="#" th:href="@{/shop/viewproduct/{id}(id=${product.id})}"
+                                           class="btn btn-primary">View Product</a>
+
+                                        <!-- Icons for wishlist and cart -->
+                                        <div class="icons">
+                                            <a href="" th:href="@{/addToWishList/{id}(id = ${product.id})}" class="icon" title="Add to Wishlist">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                            <a href="" th:href="@{/addToCart/{id}(id=${product.id})}" class="icons" title="Add to Cart">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

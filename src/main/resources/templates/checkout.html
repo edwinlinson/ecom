@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns:th = "https://www.thymeleaf.org/">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+    <!--
+        CSS
+        ============================================= -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" th:href="@{/home}" href=""><img src="" th:src="@{/img/logo.png}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" th:href="@{/home}" href="">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/shop}" href="">Shop</a></li>
+                        <li class="nav-item" th:if="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/logout}" href="">Logout</a>
+                        </li>
+                        <li class="nav-item" th:unless="${#authentication.principal != null}">
+                            <a class="nav-link" th:href="@{/login}" href="">Login</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/contact}" >Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout </h1>
+                <!--						<nav class="d-flex align-items-center">-->
+                <!--							<a th:href="@{/home}" href="">Home<span class="lnr lnr-arrow-right"></span></a>-->
+                <!--	&lt;!&ndash;						<a href="">Login/Register</a>&ndash;&gt;-->
+                <!--						</nav>-->
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <form class="row login_form"  th:action="@{/checkout/addAddress}" method="post" >
+                <h1>Select an Address</h1>
+                <label>
+                    <ul>
+                        <li th:each="address : ${user.addresses}">
+                            <input type="radio" name="selectedAddress" th:value="${address.id}">
+                            <label>
+                                <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>
+                            </label>
+                            <br>
+                        </li>
+                    </ul>
+                </label>
+            </form>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="userName" value="[[${user.name}]]">
+<input type="hidden" id="userEmail" value="[[${user.email}]]">
+<input type="hidden" id="userPhone" value="[[${user.phoneNumber}]]">
+
+<div class="container">
+
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <h1>Add a New Address</h1>
+            <form class="row login_form" th:action="@{/checkout/addAddress}" method="post" >
+                <div>
+                    <input required type="text" name="street" placeholder="Street">
+                </div>
+                <div>
+                    <input required type="text" name="state" placeholder="State">
+                </div>
+                <div>
+                    <input required type="number" name="postalcode" placeholder="Postal Code">
+                </div>
+                <div>
+                    <input required type="text" name="country" placeholder="Country">
+                </div>
+                <button type="submit">Add New Address</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--<div>-->
+<!--    <h2>Payment Details</h2>-->
+<!--    <form th:action="@{/checkout/confirmOrder}" method="post">-->
+<!--        &lt;!&ndash; Payment method selection &ndash;&gt;-->
+<!--        <div>-->
+<!--            <label for="paymentMethod">Select Payment Method:</label>-->
+<!--            <select name="paymentMethod" id="paymentMethod" th:value="${paymentMethod}">-->
+<!--                <option value="cashOnDelivery">Cash on Delivery</option>-->
+<!--                <option value="payNow">Pay Now</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <h3> The total price of cart is  <span th:text="${totalprice}"></span></h3>-->
+<!--        <button type="submit">Confirm and Place Order</button>-->
+<!--    </form>-->
+<!--</div>-->
+<div>
+    <label for="couponCode">Coupon Code:</label>
+    <input type="text" id="couponCode" name="couponCode">
+    <button type="button" onclick="applyCoupon()">Apply Coupon</button>
+</div>
+<div class="container">
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <h1>Payment Details</h1>
+            <form class="row login_form" th:action="@{/checkout/confirmOrder}" method="post" onsubmit="return handlePayment()" >
+                <div>
+                    <label for="paymentMethod"> Select Payment Method: </label>
+                    <select name="paymentMethod" id="paymentMethod" th:value="${paymentMethod}">
+                        <option value="cashOnDelivery">Cash on Delivery</option>
+                        <option value="payNow">Pay Now</option>
+                    </select>
+                </div>
+                <input type="hidden" name="totalPrice" id="totalPrice" th:value="${totalprice}">
+                <h3> The total price of cart is  <span id="total_price" th:text="${totalprice}"></span></h3>
+<!--                <button type="button" onclick="initiateRazorpayPayment()">Confirm and Place Order</button>-->
+                <button type="submit">Confirm and place order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function handlePayment() {
+        const paymentMethod = document.getElementById("paymentMethod").value;
+        console.log(" " +paymentMethod);
+        if (paymentMethod === "payNow") {
+            console.log("payment method is payNOw");
+            initiateRazorpayPayment();
+            return false;
+        }
+        return true;
+    }
+
+    function confirmOrder(razorpay_payment_id) {
+        console.log("Inside confirmOrder");
+        $.ajax({
+            url: '/checkout/confirmOrder',
+            type: 'POST',
+            data: {
+                paymentMethod: 'payNow',
+                paymentId: razorpay_payment_id
+            },
+            success: function (data) {
+                console.log('Order confirmed successfully:', data);
+                // window.location.href = '/OrderConfirmed.html';
+            },
+            error: function (error) {
+                console.error('Error confirming order:', error);
+                alert('Error confirming order');
+            }
+        });
+    }
+
+    function initiateRazorpayPayment() {
+        console.log("Initiate razorpay pay payNOw");
+        let amount = parseFloat($('#total_price').text());
+        console.log(amount)
+        if(amount =='' || amount == null ){
+            alert("Amount is null, your cart empty");
+            return;
+        }
+        $.ajax(
+            {
+            url:'/payNow',
+            data : JSON.stringify({amount : amount,info:'order_request'}),
+            contentType : 'application/json',
+            type:'POST',
+            dataType:'json',
+            success:function (response){
+                console.log(response)
+                if (response.status === "created"){
+                    let options ={
+                        key:'rzp_test_Evnp1zBkKHfvaS',
+                        amount:response.amount,
+                        currency:'INR',
+                        name:'Karma Shoe Shop',
+                        description:'Pay for your order',
+                        image:"https://th.bing.com/th/id/OIP.ESB8d5xKbiIXELiU9EIjAQHaBk?pid=ImgDet&rs=1",
+                        order_id:response.id,
+                        handler:function (response){
+                            console.log(response.razorpay_payment_id)
+                            console.log(response.razorpay_order_id)
+                            console.log(response.razorpay_signature)
+                            console.log('payment succesfull')
+                            console.log('Calling confirmOrder');
+                            confirmOrder(response.razorpay_payment_id);
+                            alert("Congratz, Payment is succesfull!!")
+                        },
+                        prefill:{
+                            name:"Ebin Linson",
+                            email:"ebin@gmail.com",
+                            contact:"9605735217",
+                        },
+                        notes:{
+                            address: "Karma shoe Store"
+                        },
+                        theme:{
+                            color:"#3399cc"
+                        }
+                    }
+                    let rzp = new Razorpay(options);
+                    rzp.open();
+                }
+            },
+            error:function (error){
+                console.log(error)
+                alert("smthng went wrong")
+            }
+
+        }
+        )
+    }
+    function applyCoupon() {
+        const couponCode = document.getElementById('couponCode').value;
+        const totalPrice = parseFloat(document.getElementById('total_price').innerText);  // Get total price from the DOM
+        const endpoint = `/coupons/validate/${couponCode}?totalPrice=${totalPrice}`;  // Include totalPrice as a query parameter
+        console.log("Inside apply Coupon");
+
+        fetch(endpoint)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data >= 0) {
+                    const totalPriceElement = document.getElementById('total_price');
+                    const discountedPrice = totalPrice - ((data / 100) * totalPrice);
+                    totalPriceElement.innerText = discountedPrice;
+                } else {
+                    alert('Invalid coupon code. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // function applyCoupon() {
+    //     const couponCode = document.getElementById('couponCode').value;
+    //     const endpoint = '/coupons/validate?couponCode=' + couponCode;
+    //
+    //     fetch(endpoint)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data >= 0) {
+    //                 const totalPriceElement = document.getElementById('total_price');
+    //                 const totalPrice = parseFloat(totalPriceElement.innerText);
+    //                 const discountedPrice = totalPrice - data;
+    //                 totalPriceElement.innerText = discountedPrice;
+    //             } else {
+    //                 alert('Invalid coupon code. Please try again.');
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // }
+    // function applyCoupon() {
+    //     const couponCode = document.getElementById('couponCode').value;
+    //     const endpoint = '/coupons/validate/' + couponCode;
+    //     console.log("Inside apply Coupon");
+    //     fetch(endpoint)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data >= 0) {
+    //                 const totalPriceElement = document.getElementById('total_price');
+    //                 const totalPrice = parseFloat(totalPriceElement.innerText);
+    //                 const discountedPrice = totalPrice - ((data/100)*totalPrice);
+    //                 totalPriceElement.innerText = discountedPrice;
+    //             } else {
+    //                 alert('Invalid coupon code. Please try again.');
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // }
+</script>
+
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+</html>
