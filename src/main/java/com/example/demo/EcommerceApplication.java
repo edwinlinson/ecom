@@ -16,7 +16,7 @@ public class EcommerceApplication {
 	TwilioConfig twilioConfig;
 	@PostConstruct
 	public void initTwilio(){
-		Twilio.init(System.getenv("twilio.account-sid"),System.getenv("twilio.auth_token"));
+		Twilio.init(System.getenv("sid"),System.getenv("token"));
 	}
 
 	public static void main(String[] args) {
