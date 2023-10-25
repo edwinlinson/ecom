@@ -30,7 +30,8 @@ public class TwilioService {
         try {
             String number = "+91"+ userDTO.getPhoneNumber();
 //            PhoneNumber to = new PhoneNumber(number);
-            String from = twilioConfig.getTrialNumber();
+//            String from = twilioConfig.getTrialNumber();
+            String from = System.getenv("twilio.trial_number");
             String otp = generateOtp();
             String otpMessage = "hey, your otp is  " + otp + "please complete registration";
 //            Message message = Message.creator(new PhoneNumber(number),new PhoneNumber(from),otpMessage).create();
