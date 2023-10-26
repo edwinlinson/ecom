@@ -29,12 +29,9 @@ public class TwilioService {
         TwilioResponseDto twilioResponseDto =null;
         try {
             String number = "+91"+ userDTO.getPhoneNumber();
-//            PhoneNumber to = new PhoneNumber(number);
-//            String from = twilioConfig.getTrialNumber();
-            String from = System.getenv("number");
+            String from = "+12518508910";
             String otp = generateOtp();
             String otpMessage = "hey, your otp is  " + otp + "please complete registration";
-//            Message message = Message.creator(new PhoneNumber(number),new PhoneNumber(from),otpMessage).create();
             Message message = Message.creator(new PhoneNumber(number), new PhoneNumber(from), otpMessage).create();
             System.out.println("Message SID: " + message.getSid()+ " " +number );
             otpMap.put(userDTO.getEmail(),otp);
