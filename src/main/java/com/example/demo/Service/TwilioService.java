@@ -33,7 +33,6 @@ public class TwilioService {
             String otp = generateOtp();
             String otpMessage = "hey, your otp is  " + otp + "please complete registration";
             Message message = Message.creator(new PhoneNumber(number), new PhoneNumber(from), otpMessage).create();
-            System.out.println("Message SID: " + message.getSid()+ " " +number );
             otpMap.put(userDTO.getEmail(),otp);
             twilioResponseDto = new TwilioResponseDto(OtpStatus.DELIVERED, otpMessage);
         } catch (Exception e){
