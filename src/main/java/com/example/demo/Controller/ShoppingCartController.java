@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Model.*;
+import com.example.demo.Repository.OrderRepo;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.UserServiceImpl;
 import com.example.demo.ServiceImpl.AddressImpl;
@@ -37,6 +38,8 @@ public class ShoppingCartController{
     private OrderService orderService;
     @Autowired
     RazorpayClient client;
+    @Autowired
+    OrderRepo orderRepo;
 
     @GetMapping("/cart")
     public String getCart(Model model, Principal principal){
@@ -139,11 +142,12 @@ public class ShoppingCartController{
     }
     @PostMapping(value = "/checkout/confirmOrder")
     public String confirmOrder(Order order,Model model,
-                               Principal principal, @RequestParam("paymentMethod") String paymentMethod, RedirectAttributes attributes) {
+                               Principal principal, @RequestParam("paymentMethod") String paymentMethod,@RequestParam("selectedAddressId") int selectedAddressId, RedirectAttributes attributes) {
         System.out.println("in checkout");
         System.out.println("Selected payment method: " + paymentMethod);
         try {
             User user = userService.findUserByUsername(principal.getName());
+            Address selected = addressService.getAddressById(selectedAddressId).get();
             ShoppingCart cart = user.getCart();
             Set <CartItem> cartItems = cart.getCartItems();
             for (CartItem cartItem : cartItems){
@@ -186,8 +190,8 @@ public class ShoppingCartController{
             }
             cartService.clearCart(user.getEmail());
             order.setOrderDetails(orderDetails);
-            orderService.saveOrder(order);
-
+            order.setShippingAddress(selected);
+            orderRepo.save(order);
             model.addAttribute("order", order);
 
         } catch (Exception e){

@@ -138,29 +138,22 @@
                         <h3>Select Address</h3>
                         <!-- Display existing addresses as an unordered list -->
                         <ul class="existing-addresses">
-                            <!-- Iterate over the user's addresses -->
-<!--                            <th:block th:each="address : ${user.addresses}">-->
-<!--                                <li>-->
-<!--                                    <input type="radio" name="addressId" th:value="${address.id}">-->
-<!--                                    <label>-->
-<!--                                        <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>-->
-<!--                                        &lt;!&ndash;                                        ${address.street}, ${address.city}, ${address.country}&ndash;&gt;-->
-<!--                                    </label>-->
-<!--                                </li>-->
-<!--                            </th:block>-->
                             <ul class="existing-addresses">
                                 <!-- Iterate over the user's addresses -->
                                 <ul class="existing-addresses">
+                                    <!--                                                <input type="radio" name="addressId" th:value="${address.id}" id="address-${address.id}">-->
+                                    <!--                                                <label for="address-${address.id}">-->
+                                    <!--                                                    <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>-->
+                                    <!--                                                </label>-->
+                                    <!--                                                <div class="check"></div>-->
                                     <!-- Iterate over the user's addresses -->
                                     <th:block th:each="address : ${user.addresses}">
                                         <li class="payment_item">
-                                            <div class="radion_btn">
-                                                <input type="radio" name="addressId" th:value="${address.id}" id="address-${address.id}">
-                                                <label for="address-${address.id}">
+                                                <input type="radio" name="selectedAddressId" th:value="${address.id}" onchange="updateSelectedAddress(this)">
+                                                <label>
                                                     <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>
                                                 </label>
-                                                <div class="check"></div>
-                                            </div>
+                                                <br>
 <!--                                            <p>Pay at the time of delivery.</p>-->
                                         </li>
                                     </th:block>
@@ -272,6 +265,7 @@
                                     <input type="checkbox" id="f-option4" name="selector">
                                     <label for="f-option4">I’ve read and accept the <a href="#">terms & conditions*</a></label>
                                 </div>
+                                <input type="hidden" id="selectedAddressId" name="selectedAddressId" />
                                 <button type="submit">Confirm Order</button>
                             </form>
 
@@ -392,6 +386,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         }
 
         return true;
+    }
+    function updateSelectedAddress(radio) {
+        var addressId = radio.value;
+        document.getElementById("selectedAddressId").value = addressId;
     }
     let couponApplied = false;
     function applyCoupon() {

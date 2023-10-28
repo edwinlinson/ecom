@@ -24,5 +24,5 @@ public class OrderDetails implements Serializable {
     private Product product;
 
     @Column(name = "quantity1")
-    private int quantity1;
+    private Integer quantity1;
 }

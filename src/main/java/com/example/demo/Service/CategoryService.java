@@ -13,6 +13,9 @@ import com.example.demo.Repository.CategoryRepo;
 public class CategoryService {
 	@Autowired
 	CategoryRepo categoryRepository;
+	public Optional<Category> findById(long id){
+		return categoryRepository.findById((int) id);
+	}
 	public List<Category> getAllCategory(){
 		return categoryRepository.findAll();
 	}

@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Entity
 @Data
 public class Wallet implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wallet_id")

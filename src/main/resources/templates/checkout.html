@@ -90,7 +90,7 @@
                 <label>
                     <ul>
                         <li th:each="address : ${user.addresses}">
-                            <input type="radio" name="selectedAddress" th:value="${address.id}">
+                            <input type="radio" name="selectedAddress" th:value="${address.id}" >
                             <label>
                                 <span th:text="${address.street} + ',' + ${address.state} + ',' + ${address.country}"></span>
                             </label>
@@ -112,7 +112,7 @@
     <div class="col-lg-6 text-center" style="margin: auto">
         <div class="login_form_inner">
             <h1>Add a New Address</h1>
-            <form class="row login_form" th:action="@{/checkout/addAddress}" method="post" >
+            <form class="row login_form" th:action="@{/checkout/confirmOrder}" method="post" >
                 <div>
                     <input required type="text" name="street" placeholder="Street">
                 </div>
@@ -184,6 +184,11 @@
             return false;
         }
         return true;
+    }
+
+    function updateSelectedAddress(radio) {
+        var addressId = radio.value;
+        document.getElementById("selectedAddressId").value = addressId;
     }
 
     function confirmOrder(razorpay_payment_id) {

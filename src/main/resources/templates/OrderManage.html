@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css"/>
   <link rel="stylesheet" href="css/magnific-popup.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -65,6 +66,17 @@
   </div>
 </header>
 
+<!--<script>-->
+<!--  function confirmReturn(orderId) {-->
+<!--    console.log("in confirm Return js method")-->
+<!--    if (confirm("Are you sure you want to return this order?")) {-->
+<!--      window.location.href = "/orders/return/" + orderId; -->
+<!--    } else {-->
+<!--    }-->
+<!--  }-->
+<!--</script>-->
+
+
 <section class="banner-area organic-breadcrumb">
   <div class="container">
     <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -96,6 +108,10 @@
       <td>
         <p th:if="${order.orderStatus == 'CANCELLED'}">Order Cancelled.</p>
         <p th:if="${order.orderStatus == 'OUT_FOR_DELIVERY'}">Order out for Delivery.</p>
+
+        <p th:if="${order.orderStatus == 'DELIVERED'}">
+          <button type="button" class="btn btn-primary" onclick="confirmReturn(${'order.id'})">Return Order</button>
+        </p>
 
         <form th:unless="${order.orderStatus == 'CANCELLED'}" th:action="@{/orders/cancel/{orderId}(orderId=${order.id})}" method="post">
           <button type="submit" class="btn btn-danger">Cancel</button>
@@ -131,6 +147,7 @@
         <p>Payment Type: <span th:text="${order.paymentMethod}"></span></p>
 <!--        <p>Total Items: <span th:text="${order.}"></span></p>-->
         <p>Order Status <span th:text="${order.orderStatus}"></span></p>
+        <p>Delivery Adresss <span th:text="${order.shippingAddress}"></span></p>
         <ul>
           <li th:each="orderDetail : ${order.orderDetails}">
             Product: <span th:text="${orderDetail.product.name}"></span>
@@ -145,7 +162,20 @@
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  function confirmReturn(orderId) {
+    console.log("Button clicked"); // Debugging statement
+    if (confirm("Are you sure you want to return this order?")) {
+      window.location.href = "/orders/return/" + orderId; // Redirect to the return endpoint
+    } else {
+      console.log("Return cancelled"); // Debugging statement
+    }
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -1,24 +1,38 @@
 package com.example.demo.Model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
+@Data
 public class Offers implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "offer_id")
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private String description;
 
-    private double discount;
+    private int offPercentage;
 
+    private String offerType;
+    @Column(nullable = true)
+    private Long offerProductId;
+    @Column(nullable = true)
+    private String applicableForProductName;
+    @Column(nullable = true)
+    private int offerCategoryId;
+    @Column(nullable = true)
+    private String applicableForCategoryName;
+
+    private boolean enabled;
+    private boolean deleted;
+    private Date createdAt;
+    private Date updateOn;;
 }

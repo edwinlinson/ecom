@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AddressImpl implements AddressService {
     @Autowired
@@ -20,6 +22,11 @@ public class AddressImpl implements AddressService {
     @Override
     public Address addAddress(Address address) {
         return addressRepo.save(address);
+    }
+
+    @Override
+    public Optional<Address> getAddressById(int id) {
+        return addressRepo.findById(id);
     }
 
     @Override

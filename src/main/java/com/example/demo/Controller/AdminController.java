@@ -15,6 +15,7 @@ import com.example.demo.Repository.UserRepo;
 import com.example.demo.Security.UserDetailsImpl;
 import com.example.demo.Service.CouponService;
 import com.example.demo.Service.UserServiceImpl;
+import com.example.demo.ServiceImpl.OfferService;
 import com.example.demo.ServiceImpl.OrderService;
 import com.example.demo.dto.UserDTO;
 import jakarta.servlet.http.HttpSession;
@@ -40,6 +41,8 @@ public class AdminController {
 	
 	@Autowired
 	CategoryService categoryService;
+	@Autowired
+	OfferService offerService;
 
 	
 	@Autowired
@@ -57,15 +60,14 @@ public class AdminController {
 	public String getAdmin() {
 		return "adminHome";
 	}
+	@GetMapping("/admin/dashboard")
+	public String getAdmindash() {
+		return "/admin/index";
+	}
 	@GetMapping("/admin/categories")
 	public String getcat(Model model) {
 		model.addAttribute("categories",categoryService.getAllCategory());
 		return "categories";
-	}
-	@GetMapping("/admin/coupons")
-	public String getCoupons(Model model){
-		model.addAttribute("coupons",couponService.getAllCoupons());
-		return "/admin/coupons";
 	}
 
 	@PostMapping("/admin/categoriespop/add")
@@ -124,143 +126,6 @@ public class AdminController {
 		return "redirect:/admin/categories";
 	}
 
-
-//	@PostMapping("/admin/products/add")
-//	public String productAddPost(
-//			@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
-//			@RequestParam("files") MultipartFile[] files,
-//			@RequestParam("imgNames") List<String> imgNames,
-//			BindingResult result, Model model,
-//			RedirectAttributes attributes) throws IOException {
-//
-//		if (productService.isProductExists(productDTO.getName())) {
-//			System.out.println("Product exists with the same name");
-//			attributes.addFlashAttribute("error", "A product with this name already exists");
-//			return "redirect:/admin/products/add";
-//		}
-//
-//		if (result.hasErrors()) {
-//			model.addAttribute("productDTO", productDTO);
-//			attributes.addFlashAttribute("error", "Some validation error occurred");
-//			return "redirect:/admin/products/add";
-//		}
-//
-//		Product product = new Product();
-//		product.setId(productDTO.getId());
-//		product.setName(productDTO.getName());
-//		product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
-//		product.setPrice(productDTO.getPrice());
-//		product.setBrand(productDTO.getBrand());
-//		product.setDescription(productDTO.getDescription());
-//
-//		// Handle multiple image uploads
-//		Set<String> imageUUIDs = new HashSet<>();
-//
-//		for (int i = 0; i < files.length; i++) {
-//			MultipartFile file = files[i];
-//			String imgName = imgNames[i];
-//
-//			if (!file.isEmpty()) {
-//				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
-//				Path filenamePath = Paths.get(uploadDir, imageUUID);
-//				Files.write(filenamePath, file.getBytes());
-//				imageUUIDs.add(imageUUID);
-//			} else {
-//				imageUUIDs.add(imgName);
-//			}
-//		}
-//
-//		product.setImageNames(imageUUIDs);
-//		productService.addProduct(product);
-//		return "redirect:/admin/products";
-//	}
-
-//	@PostMapping("/admin/products/add")
-//	public String productAddPost(
-//			@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
-//			@RequestParam("files") MultipartFile[] files,
-//			@RequestParam("imgNames") Set<String> imgNamesSet,
-//			BindingResult result,
-//			Model model,
-//			RedirectAttributes attributes) throws IOException {
-//
-//		Product product = new Product();
-//		product.setId(productDTO.getId());
-//		product.setName(productDTO.getName());
-//		product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
-//		product.setPrice(productDTO.getPrice());
-//		product.setBrand(productDTO.getBrand());
-//		product.setDescription(productDTO.getDescription());
-//
-////		List<String> imgNames = new ArrayList<>(imgNamesSet);
-////		// Handle multiple image uploads
-////		Set<String> imageUUIDs = new HashSet<>();
-//
-////		for (int i = 0; i < files.length; i++) {
-////			MultipartFile file = files[i];
-////			String imgName = imgNames[i];
-////
-////			if (!file.isEmpty()) {
-////				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
-////				Path filenamePath = Paths.get(uploadDir, imageUUID);
-////				Files.write(filenamePath, file.getBytes());
-////				imageUUIDs.add(imageUUID);
-////			} else {
-////				imageUUIDs.add(imgName);
-////			}
-////		}
-//		List<String> imgNames = new ArrayList<>(imgNamesSet);
-//
-//		Set<String> imageUUIDs = new HashSet<>();
-//
-//		for (int i = 0; i < files.length; i++) {
-//			MultipartFile file = files[i];
-//			String imgName = imgNames.get(i);  // Corrected: Accessing elements using get()
-//
-//			if (!file.isEmpty()) {
-//				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
-//				Path filenamePath = Paths.get(uploadDir, imageUUID);
-//				Files.write(filenamePath, file.getBytes());
-//				imageUUIDs.add(imageUUID);
-//			} else {
-//				imageUUIDs.add(imgName);
-//			}
-//		}
-//		if (productService.isProductExists(productDTO.getName()))
-//		{
-//			System.out.println("Product exists with the same name");
-//			attributes.addFlashAttribute("error", "A product with this name already exists");
-//			return "redirect:/admin/products/add";
-//		}
-////		if(result.hasFieldErrors("brand"))
-//			if (product.getName()==null){
-//			System.out.println("Some error occurred");
-//			attributes.addFlashAttribute("error", "Do not leave blank space for name");
-////			return "redirect:/admin/products/add";
-//			return "productsAdd";
-//		}
-////		if(result.hasFieldErrors("name"))
-//		if (product.getBrand()==null)
-//		{
-//			System.out.println("Some error occurred");
-//			attributes.addFlashAttribute("error", "Do not leave empty space fo brand");
-//			return "redirect:/admin/products/add";
-////			return "productsAdd";
-//		}
-//
-//		if (result.hasErrors()) {
-//////			model.addAttribute("productDTO", productDTO);
-////			attributes.addFlashAttribute("error", "error");
-//////			return "redirect:/admin/products/add";
-//			for (FieldError error :result.getFieldErrors()){
-//				System.out.println("F  " +error.getField() + " Message "  + error.getDefaultMessage());
-//			}
-//			return "productsAdd";
-//		}
-//		product.setImageNames(imageUUIDs);
-//		productService.addProduct(product);
-//		return "redirect:/admin/products";
-//	}
 @GetMapping("/admin/products/add")
 public String productAddGet(Model model) {
 	model.addAttribute("productDTO", new ProductDTO());
@@ -491,11 +356,7 @@ public String disableProduct(@PathVariable int id) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date);
 	}
-	@PostMapping("/admin/coupons/add")
-	public String postCouponAdd(@ModelAttribute("coupon") Coupon coupon, Model model){
-		couponService.addCoupon(coupon);
-		return "redirect:/admin/coupons";
-	}
+
 	@GetMapping("/admin/coupons/toggleActivation/{id}")
 	public String toggleActivation(@PathVariable("id") int id) {
 		Coupon coupon = couponService.getCouponById(id).get();
@@ -505,4 +366,179 @@ public String disableProduct(@PathVariable int id) {
 		}
 		return "redirect:/admin/coupons";
 	}
+	@GetMapping("/admin/coupons")
+	public String getCoupons(Model model){
+		model.addAttribute("coupons",couponService.getAllCoupons());
+		return "/admin/coupons";
+	}
+
+	@GetMapping("/admin/offers")
+	public String getOffers(Model model){
+		model.addAttribute("offers",offerService.getAllOffers());
+		return "/admin/offers";
+	}
+	@GetMapping("/admin/offers/add")
+	public String getOfferAdd(Model model){
+		model.addAttribute("products", productService.getAllProducts());
+		model.addAttribute("categories",categoryService.getAllCategory());
+		model.addAttribute("offer",new Offers());
+		return "/admin/OfferAdd";
+	}
+	@PostMapping("/admin/offers/add")
+	public String postOfferAdd(@ModelAttribute("offer")@Valid Offers offer,Model model, RedirectAttributes attributes){
+		try{
+			offerService.add(offer);
+			attributes.addFlashAttribute("text","Offer added Successfully");
+		}catch (Exception e){
+			e.printStackTrace();
+			attributes.addFlashAttribute("text","Offer add failed, please try again");
+		}
+		return "redirect:/admin/offers";
+	}
+	@PostMapping("/admin/coupons/add")
+	public String postCouponAdd(@ModelAttribute("coupon") Coupon coupon, Model model){
+		couponService.addCoupon(coupon);
+		return "redirect:/admin/coupons";
+	}
+
+
+
+
+
+//	@PostMapping("/admin/products/add")
+//	public String productAddPost(
+//			@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
+//			@RequestParam("files") MultipartFile[] files,
+//			@RequestParam("imgNames") List<String> imgNames,
+//			BindingResult result, Model model,
+//			RedirectAttributes attributes) throws IOException {
+//
+//		if (productService.isProductExists(productDTO.getName())) {
+//			System.out.println("Product exists with the same name");
+//			attributes.addFlashAttribute("error", "A product with this name already exists");
+//			return "redirect:/admin/products/add";
+//		}
+//
+//		if (result.hasErrors()) {
+//			model.addAttribute("productDTO", productDTO);
+//			attributes.addFlashAttribute("error", "Some validation error occurred");
+//			return "redirect:/admin/products/add";
+//		}
+//
+//		Product product = new Product();
+//		product.setId(productDTO.getId());
+//		product.setName(productDTO.getName());
+//		product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
+//		product.setPrice(productDTO.getPrice());
+//		product.setBrand(productDTO.getBrand());
+//		product.setDescription(productDTO.getDescription());
+//
+//		// Handle multiple image uploads
+//		Set<String> imageUUIDs = new HashSet<>();
+//
+//		for (int i = 0; i < files.length; i++) {
+//			MultipartFile file = files[i];
+//			String imgName = imgNames[i];
+//
+//			if (!file.isEmpty()) {
+//				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
+//				Path filenamePath = Paths.get(uploadDir, imageUUID);
+//				Files.write(filenamePath, file.getBytes());
+//				imageUUIDs.add(imageUUID);
+//			} else {
+//				imageUUIDs.add(imgName);
+//			}
+//		}
+//
+//		product.setImageNames(imageUUIDs);
+//		productService.addProduct(product);
+//		return "redirect:/admin/products";
+//	}
+
+//	@PostMapping("/admin/products/add")
+//	public String productAddPost(
+//			@Valid @ModelAttribute("productDTO") ProductDTO productDTO,
+//			@RequestParam("files") MultipartFile[] files,
+//			@RequestParam("imgNames") Set<String> imgNamesSet,
+//			BindingResult result,
+//			Model model,
+//			RedirectAttributes attributes) throws IOException {
+//
+//		Product product = new Product();
+//		product.setId(productDTO.getId());
+//		product.setName(productDTO.getName());
+//		product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
+//		product.setPrice(productDTO.getPrice());
+//		product.setBrand(productDTO.getBrand());
+//		product.setDescription(productDTO.getDescription());
+//
+////		List<String> imgNames = new ArrayList<>(imgNamesSet);
+////		// Handle multiple image uploads
+////		Set<String> imageUUIDs = new HashSet<>();
+//
+////		for (int i = 0; i < files.length; i++) {
+////			MultipartFile file = files[i];
+////			String imgName = imgNames[i];
+////
+////			if (!file.isEmpty()) {
+////				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
+////				Path filenamePath = Paths.get(uploadDir, imageUUID);
+////				Files.write(filenamePath, file.getBytes());
+////				imageUUIDs.add(imageUUID);
+////			} else {
+////				imageUUIDs.add(imgName);
+////			}
+////		}
+//		List<String> imgNames = new ArrayList<>(imgNamesSet);
+//
+//		Set<String> imageUUIDs = new HashSet<>();
+//
+//		for (int i = 0; i < files.length; i++) {
+//			MultipartFile file = files[i];
+//			String imgName = imgNames.get(i);  // Corrected: Accessing elements using get()
+//
+//			if (!file.isEmpty()) {
+//				String imageUUID = UUID.randomUUID().toString(); // Generate a unique image name
+//				Path filenamePath = Paths.get(uploadDir, imageUUID);
+//				Files.write(filenamePath, file.getBytes());
+//				imageUUIDs.add(imageUUID);
+//			} else {
+//				imageUUIDs.add(imgName);
+//			}
+//		}
+//		if (productService.isProductExists(productDTO.getName()))
+//		{
+//			System.out.println("Product exists with the same name");
+//			attributes.addFlashAttribute("error", "A product with this name already exists");
+//			return "redirect:/admin/products/add";
+//		}
+////		if(result.hasFieldErrors("brand"))
+//			if (product.getName()==null){
+//			System.out.println("Some error occurred");
+//			attributes.addFlashAttribute("error", "Do not leave blank space for name");
+////			return "redirect:/admin/products/add";
+//			return "productsAdd";
+//		}
+////		if(result.hasFieldErrors("name"))
+//		if (product.getBrand()==null)
+//		{
+//			System.out.println("Some error occurred");
+//			attributes.addFlashAttribute("error", "Do not leave empty space fo brand");
+//			return "redirect:/admin/products/add";
+////			return "productsAdd";
+//		}
+//
+//		if (result.hasErrors()) {
+//////			model.addAttribute("productDTO", productDTO);
+////			attributes.addFlashAttribute("error", "error");
+//////			return "redirect:/admin/products/add";
+//			for (FieldError error :result.getFieldErrors()){
+//				System.out.println("F  " +error.getField() + " Message "  + error.getDefaultMessage());
+//			}
+//			return "productsAdd";
+//		}
+//		product.setImageNames(imageUUIDs);
+//		productService.addProduct(product);
+//		return "redirect:/admin/products";
+//	}
 }

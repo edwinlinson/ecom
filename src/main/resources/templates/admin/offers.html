@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Offers and discounts.</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <a th:href="@{/admin/offers/add}" style="margin: 20px 0" class="btn btn-primary">Add Offers</a>
+<!--    <table class="table">-->
+<!--        <thead class="thead-light">-->
+<!--        <tr>-->
+<!--            <th scope="col">SN</th>-->
+<!--            <th scope="col">Offer Name</th>-->
+<!--            <th scope="col">Offer Description</th>-->
+<!--            &lt;!&ndash;            <th scope="col">Expiry</th>&ndash;&gt;-->
+<!--            <th scope="col">Discount</th>-->
+<!--            <th scope="col">Offer Applicable for </th>-->
+<!--            <th scope="col">Offer for </th>-->
+<!--            <th scope="col">Action</th>-->
+
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+
+<!--        <tr th:each="offer, iStat : ${offers}">-->
+<!--            <th scope="row" th:text="${iStat.index + 1}">1</th>-->
+<!--            <td th:text="${offer.name}">Larry</td>-->
+<!--            <td th:text="${offer.description}">Larry</td>-->
+<!--            <td th:text="${offer.discount}">Larry</td>-->
+<!--            <td th:text="${offer.offerType}">Larry</td>-->
+<!--            <td th:text="${offer.forName}">Larry</td>-->
+<!--            <td th:text="${offer.isActive()}">Larry</td>-->
+<!--            &lt;!&ndash;            <td><a href="" th:href="@{/admin/categories/update/{id}(id=${coupon.id})}" class="btn btn-warning">Update</a></td>&ndash;&gt;-->
+<!--            <td>-->
+<!--                <a th:href="@{/admin/offer/toggleActivation/{id}(id=${offer.id})}" class="btn btn-info" th:text="${offer.active ? 'Deactivate' : 'Activate'}"></a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+    <table id="offersTable" class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Offer Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Discount %</th>
+            <th scope="col">Offer For</th>
+            <th scope="col">Offer Applied On</th>
+            <th scope="col">Update</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "offer : ${offers}">
+            <td th:text = "${offer.name}"></td>
+            <td th:text = "${offer.description}"></td>
+            <td th:text = "${offer.offPercentage}"></td>
+            <td th:text = "${offer.offerType}"></td>
+            <td >
+                <span th:if="${offer.offerProductId != null}" th:text = "${offer.applicableForProductName}"></span>
+                <span th:if="${offer.offerCategoryId != null}" th:text = "${offer.applicableForCategoryName}"></span>
+            </td>
+            <td><a th:href="@{/admin_panel/offer/update/{id}(id= ${offer.id})}" class="btn btn-xs btn-primary">Update</a></td>
+            <td>
+                <a th:if="${offer.enabled} == true" th:href="@{/admin_panel/offer/disable/{id}(id = ${offer.id})}"
+                   class="btn btn-xs btn-danger" onclick="if (!(confirm('Are you sure you want to Disable this offer?'))) return false">Disable</a>
+                <a th:if="${offer.enabled} == false" onclick="if (!(confirm('Are you sure you want to Enable this offer?'))) return false" th:href="@{/admin_panel/offer/enable/{id}(id = ${offer.id})}"
+                   class=" btn btn-xs btn-primary">Enable</a>
+                <a  th:href="@{/admin_panel/offer/delete/{id}(id = ${offer.id})}"
+                    class=" btn btn-xs btn-danger" onclick="if (!(confirm('Are you sure you want to Delete this offer?'))) return false">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -2,7 +2,6 @@ package com.example.demo.ServiceImpl;
 
 import com.example.demo.Model.*;
 import com.example.demo.Repository.OrderRepo;
-import com.example.demo.Repository.ProductRepo;
 import com.example.demo.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,9 @@ public class OrderService implements com.example.demo.Service.OrderService {
     @Autowired
     ProductService productService;
 
-    public Order saveOrder(Order order){
-        return orderRepo.save(order);
+    public void saveOrder(Order order){
+        System.out.println("in save order method  "+order.getPaymentMethod());
+        orderRepo.save(order);
     }
 
     @Override

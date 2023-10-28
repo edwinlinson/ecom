@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Add Offer </title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2 class="mt-2">Create Offer</h2>
+            <form th:action="@{/admin/offers/add}" th:object="${offer}"  method="post">
+                <div class="col-md-4">
+                    <label for="OfferName" class="form-label">Offer Name</label>
+                    <input  name="name" class="form-control" id="OfferName" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="OfferDescription" class="form-label">Description</label>
+                    <input name="description"   required class="form-control" id="OfferDescription">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="OfferAmount" class="form-label">Percentage Off</label>
+                    <input type="number" name="offPercentage" class="form-control" id="OfferAmount" required>
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <label for="OfferType" class="form-label">Type</label>
+                    <select onchange="typeSelection()" class= "form-control" id="OfferType" name="offerType">
+                        <option th:value="null" >Select Option</option>
+                        <option  th:value="Product">Product</option>
+                        <option  th:value="Category">Category</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-4" id="proList" hidden>
+                    <label for="OfferProducts" class="form-label">Product</label>
+                    <select id="OfferProducts" name="offerProductId" class="form-control">
+                        <option selected disabled value="">Select a product</option>
+                        <th:block th:each="product : ${products}">
+                            <option th:value="${product.id}" th:text="${product.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div  class="col-md-4" id="catList" hidden>
+                    <label for="OfferCategory" class="form-label">Category</label>
+                    <select id="OfferCategory" name="offerCategoryId" class="form-control">
+                        <option selected value="">Select a category</option>
+                        <th:block th:each="category : ${categories}">
+                            <option th:value="${category.id}" th:text="${category.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+
+                <div class="col-12 mt-25">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function typeSelection() {
+        const type = document.getElementById("OfferType");
+        const productSelect = document.getElementById("proList");
+        const categorySelect = document.getElementById("catList");
+
+        if(type.value == "Product"){
+            productSelect.hidden = false;
+            categorySelect.hidden = true;
+        }
+        else{
+            productSelect.hidden = true;
+            categorySelect.hidden = false;
+        }
+    }
+</script>
+
+</body>
+
+
+</html>

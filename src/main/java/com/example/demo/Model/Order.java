@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @ToString
 public class Order implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
