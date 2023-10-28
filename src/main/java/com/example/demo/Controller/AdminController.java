@@ -141,37 +141,38 @@ public String productAddPost(
 		@RequestParam("imageNames") Set<String> imgNamesSet,
 		Model model,
 		RedirectAttributes attributes) throws IOException {
-	if (productService.isProductExists(productDTO.getName()))
-	{
-		System.out.println("Product exists with the same name");
-		attributes.addFlashAttribute("error", "A product with this name already exists");
-		return "redirect:/admin/products/add";
-	}
+		try{
+			if (productService.isProductExists(productDTO.getName()))
+			{
+				System.out.println("Product exists with the same name");
+				attributes.addFlashAttribute("error", "A product with this name already exists");
+				return "redirect:/admin/products/add";
+			}
 
-	if (result.hasErrors()) {
-		System.out.println("in if condition");
+			if (result.hasErrors()) {
+				System.out.println("in if condition");
 
-		List<FieldError> branderr = result.getFieldErrors().stream().filter(error -> error.getField().equals("brand"))
-				.toList();
-		List<FieldError> imageError = result.getFieldErrors().stream().filter(error -> error.getField().equals("brand"))
-				.toList();
-		model.addAttribute("error","Some error Occured");
-		if (!branderr.isEmpty()){
-			System.out.println("Brand error");
-			attributes.addFlashAttribute("errorb", "Brand name should not be empty");
-		}
-		if (!imageError.isEmpty()){
-			System.out.println("Image error");
-			attributes.addFlashAttribute("errorc","Image uploaded has some file error");
-		}
-		return "redirect:/admin/products/add";
-	}
-	if (result.hasFieldErrors("brand")){
-		System.out.println("Brand error");
-		attributes.addFlashAttribute("errorb","Brand name should not be blank");
+				List<FieldError> branderr = result.getFieldErrors().stream().filter(error -> error.getField().equals("brand"))
+						.toList();
+				List<FieldError> imageError = result.getFieldErrors().stream().filter(error -> error.getField().equals("brand"))
+						.toList();
+				model.addAttribute("error","Some error Occured");
+				if (!branderr.isEmpty()){
+					System.out.println("Brand error");
+					attributes.addFlashAttribute("errorb", "Brand name should not be empty");
+				}
+				if (!imageError.isEmpty()){
+					System.out.println("Image error");
+					attributes.addFlashAttribute("errorc","Image uploaded has some file error");
+				}
+				return "redirect:/admin/products/add";
+			}
+			if (result.hasFieldErrors("brand")){
+				System.out.println("Brand error");
+				attributes.addFlashAttribute("errorb","Brand name should not be blank");
 //		attributes.addFlashAttribute("productDTO",productDTO);
-		return "redirect:/admin/products/add";
-	}
+				return "redirect:/admin/products/add";
+			}
 //	if (result.hasFieldErrors("imageNames")){
 //		System.out.println("Image error");
 //		attributes.addFlashAttribute("errorc","Image should be in jpg, jpeg or png format.");
@@ -179,32 +180,37 @@ public String productAddPost(
 //		return "redirect:/admin/products/add";
 //	}
 
-	Product product = new Product();
-	product.setId(productDTO.getId());
-	product.setName(productDTO.getName());
-	product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
-	product.setPrice(productDTO.getPrice());
-	product.setBrand(productDTO.getBrand());
-	product.setDescription(productDTO.getDescription());
+			Product product = new Product();
+			product.setId(productDTO.getId());
+			product.setName(productDTO.getName());
+			product.setCategory(categoryService.getCatById(productDTO.getCategoryId()).get());
+			product.setPrice(productDTO.getPrice());
+			product.setBrand(productDTO.getBrand());
+			product.setDescription(productDTO.getDescription());
 //	List<String> imgNames = new ArrayList<>(imgNamesSet);
 
-	Set<String> imageUUIDs = new HashSet<>();
-	Iterator<String> imageNameIterator = imgNamesSet.iterator();
+			Set<String> imageUUIDs = new HashSet<>();
+			Iterator<String> imageNameIterator = imgNamesSet.iterator();
 
 
-	for (MultipartFile file : files) {
-		String imgName = imageNameIterator.hasNext() ? imageNameIterator.next() : null;
-		if (!file.isEmpty()) {
-			String imageUUID = UUID.randomUUID().toString();
-			Path filenamePath = Paths.get(uploadDir, imageUUID);
-			Files.write(filenamePath, file.getBytes());
-			imageUUIDs.add(imageUUID);
-		} else if (imgName != null) {
-			imageUUIDs.add(imgName);
+			for (MultipartFile file : files) {
+				String imgName = imageNameIterator.hasNext() ? imageNameIterator.next() : null;
+				if (!file.isEmpty()) {
+					String imageUUID = UUID.randomUUID().toString();
+					Path filenamePath = Paths.get(uploadDir, imageUUID);
+					Files.write(filenamePath, file.getBytes());
+					imageUUIDs.add(imageUUID);
+				} else if (imgName != null) {
+					imageUUIDs.add(imgName);
+				}
+			}
+			product.setImageNames(imageUUIDs);
+			productService.addProduct(product);
+
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-	}
-	product.setImageNames(imageUUIDs);
-	productService.addProduct(product);
+
 	return "redirect:/admin/products";
 }
 
