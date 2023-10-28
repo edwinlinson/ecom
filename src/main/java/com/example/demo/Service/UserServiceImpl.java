@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Model.Product;
 import com.example.demo.Model.ShoppingCart;
 import com.example.demo.Model.User;
+import com.example.demo.Model.Wallet;
 import com.example.demo.Repository.UserRepo;
 import com.example.demo.ServiceImpl.ShoppingCartServiceImpl;
 import com.example.demo.dto.UserDTO;
@@ -138,6 +139,43 @@ public class UserServiceImpl implements UserServiceInterface {
     @Override
     public List<UserDTO> searchUser(String role, String name) {
         return null;
+    }
+
+    @Override
+    public void addToUserBalance(User user, double orderAmount) {
+
+        Wallet wallet  = user.getWallet();
+
+        if (wallet == null) {
+            wallet = new Wallet();
+            wallet.setUser(user);
+            wallet.setBalance(orderAmount);
+            user.setWallet(wallet);
+        } else {
+
+            double currentBalance = wallet.getBalance();
+            double newBalance = currentBalance + orderAmount;
+            wallet.setBalance(newBalance);
+        }
+
+        userRepo.save(user);
+        wallet = user.getWallet();
+
+        if (wallet == null) {
+            // Handle the case where the user doesn't have a wallet, e.g., create one.
+            wallet = new Wallet();
+            wallet.setUser(user);
+            wallet.setBalance(orderAmount);
+            user.setWallet(wallet);
+        } else {
+            // Update the wallet balance
+            double currentBalance = wallet.getBalance();
+            double newBalance = currentBalance + orderAmount;
+            wallet.setBalance(newBalance);
+        }
+
+        // You may also want to save the updated user entity to your database
+        userRepo.save(user);
     }
 
     public  List<User> getAllUsers() {

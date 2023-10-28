@@ -34,6 +34,26 @@ public class UserController {
     @Autowired
     UserRepo userRepo;
 
+//    @PostMapping("/orders/return/{orderId}")
+//    public String returnOrder(Model model,@PathVariable("orderId") int orderId,Principal principal){
+//        User user = userService.findUserByUsername(principal.getName());
+//
+//    }
+@PostMapping("/orders/return/{orderId}")
+public String returnOrder(Model model, @PathVariable("orderId") long orderId, Principal principal) {
+    Order order = orderService.findOrderById(orderId).get();
+
+    double orderAmount = order.getTotalPrice();
+
+    User user = userService.findUserByUsername(principal.getName());
+
+    userService.addToUserBalance(user, orderAmount);
+    order.setOrderStatus("Returned");
+
+    // Redirect or return a success view
+    return "redirect:/wallet"; // You can create a custom success page for this.
+}
+
     @GetMapping("/user")
     public String userDash(@ModelAttribute("user")User user, Model model){
         String name = user.getName();

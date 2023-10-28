@@ -129,7 +129,7 @@ public class ShoppingCartController{
         model.addAttribute("addresses",addresses);
         model.addAttribute("totalprice", totalprice);
         model.addAttribute("paymentMethod", "CashOnDelivery");
-        return "checkout";
+        return "checkout1";
     }
 
 

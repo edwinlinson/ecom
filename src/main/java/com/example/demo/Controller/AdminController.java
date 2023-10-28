@@ -37,8 +37,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AdminController {
-	public static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/productImages";
-	
+//	public static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/productImages";
+	public static String uploadDir =  "/home/ubuntu/ecom/src/main/resources/static/productImages";
+
 	@Autowired
 	CategoryService categoryService;
 	@Autowired
@@ -60,10 +61,28 @@ public class AdminController {
 	public String getAdmin() {
 		return "adminHome";
 	}
+
+
 	@GetMapping("/admin/dashboard")
-	public String getAdmindash() {
+	public String getAdmindash(Model model) {
+		Calendar calendar = Calendar.getInstance();
+		Date fromDate = calendar.getTime();
+		calendar.add(Calendar.MONTH, 1);
+		Date toDate = calendar.getTime();
+		System.out.println(" "+fromDate+ " " +toDate );
+		List<Order> sales = orderService.getSalesData(fromDate, toDate);
+		List<Report> monthlySales = generateReport(sales);
+		double totalAmount = calculateMonthlyTotalAmount(monthlySales);
+		model.addAttribute("sales", monthlySales);
+		model.addAttribute("totalAmount", totalAmount);
+		System.out.println(" " +totalAmount);
 		return "/admin/index";
 	}
+
+	private double calculateMonthlyTotalAmount(List<Report> monthlySales) {
+		return monthlySales.stream().mapToDouble(Report::getTotal).sum();
+	}
+
 	@GetMapping("/admin/categories")
 	public String getcat(Model model) {
 		model.addAttribute("categories",categoryService.getAllCategory());
@@ -191,7 +210,6 @@ public String productAddPost(
 
 			Set<String> imageUUIDs = new HashSet<>();
 			Iterator<String> imageNameIterator = imgNamesSet.iterator();
-
 
 			for (MultipartFile file : files) {
 				String imgName = imageNameIterator.hasNext() ? imageNameIterator.next() : null;

@@ -17,4 +17,6 @@ public interface UserServiceInterface {
 
     void deleteUserById(int id);
     List<UserDTO> searchUser(String role,String name);
+
+    void addToUserBalance(User user, double orderAmount);
 }
